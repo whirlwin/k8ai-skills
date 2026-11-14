@@ -39,7 +39,7 @@ cat ~/.config/k8ai/node.yaml
 ```
 
 The node has joined when `node.yaml` exists and its node name shows up in
-`k8ai nodes` as Ready. If not, **stop and ask the user** to join it themselves,
+`k8ai nodes` with Ready `True`. If not, **stop and ask the user** to join it themselves,
 because it installs a background service and needs a node kubeconfig only they
 hold:
 
