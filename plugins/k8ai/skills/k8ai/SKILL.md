@@ -141,3 +141,39 @@ before running it** and name the session you will delete:
 ```sh
 kubectl delete agentsession <name> -n k8ai-adopted
 ```
+
+## 6. Skills (optional)
+
+k8ai can also publish which agent skills this machine has (folders with a
+`SKILL.md` in `~/.claude/skills`, `~/.config/opencode/skills`,
+`~/.codex/skills` and `~/.agents/skills`) as `NodeSkill` resources, and
+install skills declared in the cluster as `AgentSkill` resources. Only do
+this when the user asks for it.
+
+Inventory publishes each skill's name, frontmatter description, folder paths,
+link targets and a content hash, never file contents. Preview it first and
+**ask the user to confirm** before enabling:
+
+```sh
+k8ai skills scan --dry-run
+k8ai skills enable
+k8ai skills status
+k8ai skills ls --node <name>
+```
+
+Installing puts instructions into every future agent session on this
+machine, so it is off by default and needs explicit namespaces and repo
+hosts. **Ask the user** before enabling it, and name the hosts and
+namespaces you will allow:
+
+```sh
+k8ai skills enable --install --allow-namespace default --allow-repo-host github.com
+k8ai skills add https://github.com/<owner>/<repo>.git --path <dir> --selector k8ai.dev/pool=laptop
+k8ai skills ls --declared
+k8ai skills rm <name>
+```
+
+k8ai never replaces a skill it did not install (it reports a Conflict), and
+removing an AgentSkill deletes only k8ai's own links and copy.
+`k8ai skills disable --install --purge` removes everything k8ai installed on
+this machine.

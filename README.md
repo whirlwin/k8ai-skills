@@ -13,7 +13,7 @@ Agent Skills format, so other agents can use them too.
 
 | Skill | What it does |
 |-------|--------------|
-| `k8ai` | Joins every agent session on this machine (Claude Code, opencode, codex; finished, running and future) to a k8ai cluster. It checks the node has joined, shows a dry run of what would be published, and enables adoption only after you confirm. |
+| `k8ai` | Joins every agent session on this machine (Claude Code, opencode, codex; finished, running and future) to a k8ai cluster. It checks the node has joined, shows a dry run of what would be published, and enables adoption only after you confirm. It can also publish the skills on this machine and install skills declared in the cluster, each only after you confirm. |
 
 The skill drives the `k8ai` CLI (`k8ai adopt scan --dry-run`, `adopt enable`,
 `adopt status`, `adopt disable`). You need `k8ai` and `k8ai-node` built from
