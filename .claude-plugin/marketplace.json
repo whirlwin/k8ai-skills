@@ -1,0 +1,25 @@
+{
+  "$schema": "https://code.claude.com/schemas/marketplace.json",
+  "name": "k8ai",
+  "description": "Agent skills for k8ai, a Kubernetes flavour for AI agent sessions.",
+  "owner": {
+    "name": "whirlwin",
+    "url": "https://github.com/whirlwin"
+  },
+  "plugins": [
+    {
+      "name": "k8ai",
+      "source": "./plugins/k8ai",
+      "description": "Join every agent session on this machine (Claude Code, opencode, codex; finished, running and future) to a k8ai cluster, publishing metadata only.",
+      "version": "0.1.0",
+      "author": {
+        "name": "whirlwin"
+      },
+      "homepage": "https://github.com/whirlwin/k8ai-skills",
+      "repository": "https://github.com/whirlwin/k8ai-skills",
+      "license": "MIT",
+      "keywords": ["k8ai", "kubernetes", "agents", "sessions"],
+      "category": "productivity"
+    }
+  ]
+}

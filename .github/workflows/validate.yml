@@ -1,0 +1,42 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: JSON files parse
+        run: |
+          set -euo pipefail
+          status=0
+          while IFS= read -r -d '' f; do
+            if jq empty "$f"; then echo "ok  $f"; else echo "::error file=$f::invalid JSON"; status=1; fi
+          done < <(find . -name '*.json' -not -path './.git/*' -print0)
+          exit $status
+
+      - name: SKILL.md frontmatter has name and description
+        run: |
+          set -euo pipefail
+          status=0
+          while IFS= read -r -d '' f; do
+            fm=$(awk 'NR==1 && $0!="---" {exit} NR>1 && $0=="---" {exit} NR>1 {print}' "$f")
+            dir=$(basename "$(dirname "$f")")
+            name=$(printf '%s\n' "$fm" | sed -n 's/^name:[[:space:]]*//p')
+            if [ -z "$name" ] || ! printf '%s\n' "$fm" | grep -q '^description:[[:space:]]*[^[:space:]]'; then
+              echo "::error file=$f::frontmatter needs name and description"; status=1
+            elif [ "$name" != "$dir" ]; then
+              echo "::error file=$f::name '$name' does not match directory '$dir'"; status=1
+            else
+              echo "ok  $f"
+            fi
+          done < <(find . -name SKILL.md -not -path './.git/*' -print0)
+          exit $status
