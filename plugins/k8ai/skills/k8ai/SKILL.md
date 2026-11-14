@@ -77,9 +77,16 @@ decline, stop here.
 Only after the user confirmed the preview:
 
 ```sh
-k8ai adopt enable                                  # defaults: all harnesses, namespace k8ai-adopted
+k8ai adopt enable                                  # defaults: all harnesses, all history, namespace k8ai-adopted
 k8ai adopt enable --harness claude,codex --namespace k8ai-adopted
+k8ai adopt enable --since 30d                      # backfill only the last 30 days
 ```
+
+`enable` turns adoption on in `node.yaml` and restarts the daemon. On macOS it
+restarts the launchd agent itself. If its output instead says the agent is
+not installed, or prints a `systemctl --user restart` command (Linux), ask
+the user to restart `k8ai-node` (or run the printed command with their
+consent) before polling the status.
 
 Then poll until the first scan has completed (the status shows a last scan
 time and per-harness counts):
@@ -89,7 +96,8 @@ k8ai adopt status
 ```
 
 Check every few seconds; a full backfill can take a minute or two. If the
-status reports errors, show them to the user and stop.
+`ERRORS` column is not zero or a `Last error` line appears, show it to the
+user and stop.
 
 When the scan is done, summarise the result:
 
@@ -108,6 +116,14 @@ Stop adopting (no new or updated sessions are published):
 
 ```sh
 k8ai adopt disable
+```
+
+Stop adopting and remove every session this node adopted from the cluster
+(the user's own kubeconfig does the deletes). Sessions hidden one by one stay
+hidden if adoption is enabled again. **Ask the user before running it**:
+
+```sh
+k8ai adopt disable --purge
 ```
 
 Hide one session for good: it is removed from the cluster and the daemon
