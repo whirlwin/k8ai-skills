@@ -11,7 +11,7 @@
       "name": "k8ai",
       "source": "./plugins/k8ai",
       "description": "Join every agent session on this machine (Claude Code, opencode, codex; finished, running and future) to a k8ai cluster, publishing metadata only.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": {
         "name": "whirlwin"
       },

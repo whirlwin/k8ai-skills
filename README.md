@@ -5,8 +5,8 @@ sessions. In k8ai any Kubernetes API server is the control plane, each agent
 session is an `AgentSession` custom resource, and every machine that runs
 sessions joins as an `AgentNode` by running the `k8ai-node` daemon.
 
-This repository holds instructions only: no binaries, no scripts, no personal
-data. It is a Claude Code plugin marketplace, and its skills use the open
+This repository holds instructions and one small hook script: no binaries, no
+personal data. It is a Claude Code plugin marketplace, and its skills use the open
 Agent Skills format, so other agents can use them too.
 
 ## Skills
@@ -35,6 +35,21 @@ Then ask Claude to "join my agent sessions to k8ai", or run `/k8ai:k8ai`.
 For agents that support the Agent Skills format, copy
 `plugins/k8ai/skills/k8ai` (the folder holding `SKILL.md`) into that agent's
 skills directory.
+
+## Hooks
+
+In Claude Code the plugin registers four hooks (SessionStart,
+UserPromptSubmit, Stop, SessionEnd). Each runs
+[`plugins/k8ai/hooks/k8ai-hook.sh`](plugins/k8ai/hooks/k8ai-hook.sh), which
+passes the event to `k8ai hook claude <event>` (k8ai builds without the
+`hook` command fail quietly and nothing is recorded). That command keeps one file per running
+session in `~/.k8ai/hooks/claude` with the session id, process id, working
+directory and busy/idle state, and deletes it when the session ends. The
+prompt that Claude Code hands to UserPromptSubmit hooks is never stored. The
+script prints nothing, always exits 0, and does nothing if `k8ai` is not
+installed. The `k8ai-node` daemon reads these files, so new sessions appear
+in the cluster within seconds, including sessions started from inside another
+Claude session, which leave no other reliable trace.
 
 ## Privacy
 

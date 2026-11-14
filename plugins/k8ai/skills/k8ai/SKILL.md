@@ -8,11 +8,19 @@ description: Join every AI agent session on this machine (Claude Code, opencode,
 k8ai is a Kubernetes flavour for orchestrating AI agent sessions. Adoption makes
 the `k8ai-node` daemon on this machine publish every local agent session
 (finished ones as a backfill, running ones, and every future one) as an
-`AgentSession` in the cluster, without installing hooks into any harness.
+`AgentSession` in the cluster.
 
 Only metadata is published: session id, working directory, git branch,
 start and last activity timestamps, message counts, and busy/idle for live
 sessions. Titles, prompts and message text never leave the machine.
+
+In Claude Code, this plugin also installs hooks (SessionStart, UserPromptSubmit,
+Stop, SessionEnd) that call `k8ai hook claude <event>`. They record only the
+session id, process id, working directory and busy/idle state in
+`~/.k8ai/hooks/claude`, never the prompt, so every new Claude Code session
+is picked up exactly, with busy/idle, as soon as it starts. Without `k8ai` on
+`PATH` the hooks do nothing. Sessions started before the plugin was installed
+are still found from Claude Code's own files.
 
 Use only the commands below. Never edit `~/.config/k8ai/node.yaml` by hand and
 never signal or kill agent processes.
