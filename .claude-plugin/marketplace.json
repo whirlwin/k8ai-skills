@@ -1,7 +1,7 @@
 {
   "$schema": "https://code.claude.com/schemas/marketplace.json",
   "name": "k8ai",
-  "description": "Agent skills for k8ai, a Kubernetes flavour for AI agent sessions.",
+  "description": "Agent skills and a Claude Code mod for k8ai, a Kubernetes flavour for AI agent sessions.",
   "owner": {
     "name": "whirlwin",
     "url": "https://github.com/whirlwin"
@@ -18,7 +18,31 @@
       "homepage": "https://github.com/whirlwin/k8ai-skills",
       "repository": "https://github.com/whirlwin/k8ai-skills",
       "license": "MIT",
-      "keywords": ["k8ai", "kubernetes", "agents", "sessions"],
+      "keywords": [
+        "k8ai",
+        "kubernetes",
+        "agents",
+        "sessions"
+      ],
+      "category": "productivity"
+    },
+    {
+      "name": "k8ai-nodes",
+      "source": "./plugins/k8ai-nodes",
+      "description": "Shows the nodes of your local k8ai kind cluster (kind-k8ai context) in Claude Code: a pane in new sessions and /k8ai-nodes, and the node table with a small animation in place of the spinner words.",
+      "version": "0.1.0",
+      "author": {
+        "name": "whirlwin"
+      },
+      "homepage": "https://github.com/whirlwin/k8ai-skills",
+      "repository": "https://github.com/whirlwin/k8ai-skills",
+      "license": "MIT",
+      "keywords": [
+        "k8ai",
+        "kubernetes",
+        "nodes",
+        "mod"
+      ],
       "category": "productivity"
     }
   ]

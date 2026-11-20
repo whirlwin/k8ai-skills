@@ -26,6 +26,7 @@ In Claude Code:
 ```
 /plugin marketplace add whirlwin/k8ai-skills
 /plugin install k8ai@k8ai
+/plugin install k8ai-nodes@k8ai   # optional: the node overview mod below
 ```
 
 Then ask Claude to "join my agent sessions to k8ai", or run `/k8ai:k8ai`.
@@ -64,6 +65,25 @@ anything is sent to the cluster. `k8ai adopt disable` stops adoption, and
 deleting an adopted `AgentSession` hides it for good. Working directory paths
 and branch names can themselves be revealing, so review the dry run before
 you enable adoption on a shared cluster.
+
+## The k8ai-nodes mod
+
+`k8ai-nodes` is a Claude Code mod (a hooks module, no skill) that shows the
+nodes of your local k8ai cluster inside Claude Code:
+
+- a pane with the kind cluster's Kubernetes nodes (control plane included),
+  the AgentNodes and the NodeClaims, with state, provider (local, azure, ...),
+  sessions and CPU, memory and disk use. It opens by itself in a new, empty
+  session and closes at your first prompt; `/k8ai-nodes` opens it again;
+- while Claude works, the same node table in place of the spinner words,
+  next to a small animation that cycles through Game of Life, "k8ai"
+  scrolling past, rain, ripples and pods being scheduled onto nodes.
+
+It only reads: every 10 seconds it runs `kubectl --context kind-k8ai get` for
+nodes, AgentNodes, NodeClaims and NodePools, and the nodes' stats summary. It
+always uses the `kind-k8ai` context (what `hack/kind.sh` in the k8ai repo
+creates), never kubectl's current context, so it shows nothing else. You need
+`kubectl` on `PATH`; without the cluster the pane says what kubectl reported.
 
 ## License
 
